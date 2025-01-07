@@ -6,8 +6,8 @@ O banco de dados foi configurado com um arquivo `docker-compose.yml` e scripts d
 
 Antes de começar, verifique se você tem os seguintes requisitos:
 
-- [Docker](https://www.docker.com/get-started) instalado em sua máquina.
-- [Docker Compose](https://docs.docker.com/compose/install/) instalado.
+- [Docker Desktop](https://www.docker.com/get-started) instalado em sua máquina.
+- Ou [Docker Compose](https://docs.docker.com/compose/install/) ser for Linux.
 
 ## Passos para rodar o banco de dados
 
