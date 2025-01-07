@@ -12,5 +12,17 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./scripts:/docker-entrypoint-initdb.d
 
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - "8080:80" # Acesso ao pgAdmin via navegador (porta 8080)
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com # E-mail de login do pgAdmin
+      PGADMIN_DEFAULT_PASSWORD: admin # Senha de login do pgAdmin
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin # Volume persistente para configurações do pgAdmin
+
 volumes:
   postgres_data:
+  pgadmin_data:
