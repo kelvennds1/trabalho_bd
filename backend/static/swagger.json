@@ -1,0 +1,12 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Tourism API",
+      "version": "1.0.0",
+      "description": "API for managing tourism trips and destinations"
+    },
+    "basePath": "/api",
+    "schemes": ["http"]
+
+  }
+  

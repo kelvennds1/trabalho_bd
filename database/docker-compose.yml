@@ -1,6 +1,6 @@
 services:
   db_postgres:
-    container_name: postgres
+    container_name: postgres2
     image: postgres
     ports:
       - "5432:5432"
@@ -12,8 +12,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./scripts:/docker-entrypoint-initdb.d
 
-  pgadmin:
-    container_name: pgadmin
+  pgadmin2:
+    container_name: pgadmin2
     image: dpage/pgadmin4
     ports:
       - "8080:80" # Acesso ao pgAdmin via navegador (porta 8080)
