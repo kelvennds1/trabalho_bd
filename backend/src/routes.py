@@ -486,26 +486,36 @@ def delete_pagamento(pagamento_id):
     return jsonify({'message': 'Pagamento deletado com sucesso'}), 200
 
 
-@routes.route("/api/destinos/populares", methods=["GET"])
+from sqlalchemy import text
+
+@routes.route('/api/destinos/populares', methods=['GET'])
 def get_destinos_populares():
     try:
-        limite = request.args.get("limite", 5, type=int)  # Define um limite padrão de 5 destinos
+        limite = request.args.get("limite", 10, type=int)  # Define um valor padrão de 10
 
-        # Executa a procedure corretamente
-        db.session.execute(text("CALL destinos_mais_visitados(:limite)"), {"limite": limite})
-        db.session.commit()
+        db.session.execute(text("DROP TABLE IF EXISTS temp_destinos_populares"))
 
-        # Busca os dados da tabela temporária
+        db.session.execute(text("""
+            CREATE TEMP TABLE temp_destinos_populares AS
+            SELECT d."CodDestino", d."nomeDestino", COUNT(v."codViagem") AS total_viagens
+            FROM destino d
+            JOIN rel_viagem_destino rvd ON d."CodDestino" = rvd."CodDestino"
+            JOIN viagem v ON rvd."codViagem" = v."codViagem"
+            GROUP BY d."CodDestino", d."nomeDestino"
+            ORDER BY total_viagens DESC
+            LIMIT :limite;
+        """), {"limite": limite})
+
+        db.session.commit()  # Confirma a criação da tabela temporária
+
         result = db.session.execute(text("SELECT * FROM temp_destinos_populares"))
-
-        # Converte os resultados corretamente
         destinos = [{"CodDestino": row[0], "nomeDestino": row[1], "total_viagens": row[2]} for row in result]
-
+        
         return jsonify(destinos), 200
 
     except Exception as e:
+        db.session.rollback()
         return jsonify({"message": "Erro ao buscar destinos mais populares", "error": str(e)}), 500
-
 
 # Atividades
 
